@@ -38,17 +38,33 @@ def read_text(str):
   str = str.replace(' ','_');
   subprocess.run(("espeak \""+str+"\" 2>/dev/null").split(" "));
 
+def lighting_ok():
+    lighting_value = 254; #change this to sensor value
+    return (lighting_value == 254);
+    
+def distance_ok():
+    distance = 20; #change this to sensor value
+    threshhold = 5;
+    return distance<threshhold;
+
+def send_distance_error():
+    read_text("move closer");
+
 #while(true):
 #  if (button_pressed):
 #    if (distance_ok):
-#      if (not lighting_ok):
+#      if (not lighting_ok()):
 #        turn_on_light()
-#      check_color()
-#      set_color_name()
-#      speak_color_name()
+#      input_color = Color(2,3,45); #replace with sensor value
+#      read_text(color_name(input_color));
 #    else:
 #      send_distance_error()
 
 
-print(color_name(Color(0,2,0)));
-read_text(color_name(Color(0,2,0)));
+
+
+colorTest = Color(255,243,25);
+
+print(color_name(colorTest));
+#Converts rgb to an appropriate natural-language name, then speaks it aloud
+read_text(color_name(colorTest));
