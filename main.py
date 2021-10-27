@@ -1,5 +1,8 @@
 #!/usr/bin/python
 import subprocess
+import smbus
+import time
+from tkinter import *
 
 print("Program loaded.");
 
@@ -50,13 +53,20 @@ def distance_ok():
 def send_distance_error():
     read_text("move closer");
 
+def input_color():
+  data = bus.read_i2c_block_data(0x44, 0x09, 6)
+  greenIn = int((data[1] * 256 + data[0])/256);
+  redIn = int((data[3] * 256 + data[2])/256);
+  blueIn = int((data[5] * 256 + data[4])/256);
+  return Color(redIn, greenIn, blueIn);
+
 #while(true):
-#  if (button_pressed):
-#    if (distance_ok):
+#  if (button_pressed()):
+#    if (distance_ok()):
 #      if (not lighting_ok()):
 #        turn_on_light()
-#      input_color = Color(2,3,45); #replace with sensor value
-#      read_text(color_name(input_color));
+#      input_color_val = input_color() ; #replace with sensor value
+#      read_text(color_name(input_color_val));
 #    else:
 #      send_distance_error()
 
@@ -68,3 +78,8 @@ colorTest = Color(255,243,25);
 print(color_name(colorTest));
 #Converts rgb to an appropriate natural-language name, then speaks it aloud
 read_text(color_name(colorTest));
+
+bus = smbus.SMBus(1)
+bus.write_byte_data(0x44, 0x01, 0x05)
+time.sleep(1)
+
