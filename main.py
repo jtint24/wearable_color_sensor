@@ -4,7 +4,7 @@ import smbus
 import time
 from tkinter import *
 import RPi.GPIO as GPIO
-import PCF8591 as ADC
+#import PCF8591 as ADC
 
 print("Program loaded.");
 
@@ -88,7 +88,7 @@ def lighting_ok():
     
 def distance_ok():
     distance = get_distance(); #change this to sensor value
-    threshhold = 5;
+    threshhold = 2;
     return distance<threshhold;
 
 def send_distance_error():
@@ -100,7 +100,7 @@ def input_color():
   greenIn = int((data[1] * 256 + data[0])/256);
   redIn = int((data[3] * 256 + data[2])/256);
   blueIn = int((data[5] * 256 + data[4])/256);
-  print(redIn+","+greenIn+","+blueIn);
+  print(str(redIn)+","+str(greenIn)+","+str(blueIn));
   return Color(redIn, greenIn, blueIn);
 
 def button_pressed():
