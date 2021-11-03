@@ -99,6 +99,7 @@ def input_color():
   greenIn = int((data[1] * 256 + data[0])/256);
   redIn = int((data[3] * 256 + data[2])/256);
   blueIn = int((data[5] * 256 + data[4])/256);
+  print(redIn+","+greenIn+","+blueIn);
   return Color(redIn, greenIn, blueIn);
 
 def button_pressed():
@@ -119,16 +120,15 @@ def button_pressed():
 
 
 
-colorTest = Color(255,243,25);
-
+colorTest = input_color();
 print(color_name(colorTest));
 #Converts rgb to an appropriate natural-language name, then speaks it aloud
 read_text(color_name(colorTest));
 
-bus = smbus.SMBus(1)
-bus.write_byte_data(0x44, 0x01, 0x05)
-time.sleep(1)
+#bus = smbus.SMBus(1)
+#bus.write_byte_data(0x44, 0x01, 0x05)
+#time.sleep(1)
 
-BtnPin = 11
-Gpin   = 12
-Rpin   = 13
+#BtnPin = 11
+#Gpin   = 12
+#Rpin   = 13
