@@ -95,6 +95,7 @@ def send_distance_error():
     read_text("move closer");
 
 def input_color():
+  bus = smbus.SMBus(1)
   data = bus.read_i2c_block_data(0x44, 0x09, 6);
   greenIn = int((data[1] * 256 + data[0])/256);
   redIn = int((data[3] * 256 + data[2])/256);
