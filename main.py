@@ -106,25 +106,30 @@ def input_color():
 def button_pressed():
   return GPIO.input(BtnPin);
 
+def turn_on_light():
+  print("light would be turned on")
+
+while True:
+  print("distance: "+str(get_distance()))
+  print("lighting OK?: "+str(lighting_ok()))
+  print("button pressed?: "+str(button_pressed()))
+  print("color read: "+str(button_pressed()))
+  if (button_pressed()):
+    if (distance_ok()):
+      if (not lighting_ok()):
+        turn_on_light()
+      input_color_val = input_color() ; #replace with sensor value
+      read_text(color_name(input_color_val));
+    else:
+      send_distance_error()
 
 
-#while(true):
-#  if (button_pressed()):
-#    if (distance_ok()):
-#      if (not lighting_ok()):
-#        turn_on_light()
-#      input_color_val = input_color() ; #replace with sensor value
-#      read_text(color_name(input_color_val));
-#    else:
-#      send_distance_error()
 
 
-
-
-colorTest = input_color();
-print(color_name(colorTest));
+#colorTest = input_color();
+#print(color_name(colorTest));
 #Converts rgb to an appropriate natural-language name, then speaks it aloud
-read_text(color_name(colorTest));
+#read_text(color_name(colorTest));
 
 #bus = smbus.SMBus(1)
 #bus.write_byte_data(0x44, 0x01, 0x05)

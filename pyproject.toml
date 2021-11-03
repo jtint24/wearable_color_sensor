@@ -8,6 +8,7 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.8"
 num2words = "^0.5.10"
 espeak-py = "^0.1.7"
+smbus = "^1.1.post2"
 
 [tool.poetry.dev-dependencies]
 
