@@ -4,7 +4,7 @@ import smbus
 import time
 from tkinter import *
 import RPi.GPIO as GPIO
-#import PCF8591 as ADC
+import PCF8591 as ADC
 
 print("Program loaded.");
 
@@ -24,6 +24,7 @@ ECHO = 12;
 BtnPin = 11;
 Gpin   = 12;
 Rpin   = 13;
+button_pressed_var = false;
 
 def setup(): 
     GPIO.setmode(GPIO.BOARD);
@@ -37,7 +38,7 @@ def setup():
     GPIO.setup(DO, GPIO.IN)
 
 def detect(chn):
-    Led(GPIO.input(BtnPin))
+    button_pressed_var = GPIO.input(BtnPin)
 
 def get_distance():
     GPIO.output(TRIG, 0)
