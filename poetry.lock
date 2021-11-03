@@ -26,9 +26,9 @@ python-versions = "*"
 docopt = ">=0.6.2"
 
 [[package]]
-name = "python-espeak"
-version = "0.6.3"
-description = "Python C extension for the eSpeak speech synthesizer"
+name = "smbus"
+version = "1.1.post2"
+description = "Python bindings for Linux SMBus access through i2c-dev"
 category = "main"
 optional = false
 python-versions = "*"
@@ -36,7 +36,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "cdb7cf5cd7748a3dcb9e56542602185f957fc7a2b0f9444ae99a73fb7cd8969c"
+content-hash = "930939cb265f6a452333bb258d8e298d517378e4876fc2beed9ee31f4759a854"
 
 [metadata.files]
 docopt = [
@@ -56,6 +56,9 @@ num2words = [
     {file = "num2words-0.5.10-py3-none-any.whl", hash = "sha256:0b6e5f53f11d3005787e206d9c03382f459ef048a43c544e3db3b1e05a961548"},
     {file = "num2words-0.5.10.tar.gz", hash = "sha256:37cd4f60678f7e1045cdc3adf6acf93c8b41bf732da860f97d301f04e611cc57"},
 ]
-python-espeak = [
-    {file = "python-espeak-0.6.3.tar.gz", hash = "sha256:8bef6a647227693630fbe0d89f4aaaae6c984c543bdb3ee747447b512c4c2436"},
+smbus = [
+    {file = "smbus-1.1.post2-cp27-cp27mu-linux_armv7l.whl", hash = "sha256:529f9effc383b6381534d1d845eaf1078bdd2d4e625c945b23cf274d5cf1c306"},
+    {file = "smbus-1.1.post2-cp34-cp34m-linux_armv7l.whl", hash = "sha256:39923448455a41c6bbe823de62b191103dd711917056362d9e4b1d2c6ec0f06d"},
+    {file = "smbus-1.1.post2-cp35-cp35m-linux_armv7l.whl", hash = "sha256:b467235734ae5c147c4ec0eff1afb9dba189d9d3cc086ed7e0d3dbf0ae485230"},
+    {file = "smbus-1.1.post2.tar.gz", hash = "sha256:f96d345e0aa10053a8a4917634f1dc37ba1f656fa5cace7629b71777e90855c6"},
 ]

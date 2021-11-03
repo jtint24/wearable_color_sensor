@@ -26,8 +26,6 @@ Gpin   = 12;
 Rpin   = 13;
 
 def setup(): 
-
-
     GPIO.setmode(GPIO.BOARD);
     GPIO.setup(Gpin, GPIO.OUT);
     GPIO.setup(Rpin, GPIO.OUT);
@@ -37,6 +35,9 @@ def setup():
     GPIO.setup(ECHO, GPIO.IN);
     ADC.setup(0x48)
     GPIO.setup(DO, GPIO.IN)
+
+def detect(chn):
+    Led(GPIO.input(BtnPin))
 
 def get_distance():
     GPIO.output(TRIG, 0)
@@ -109,21 +110,32 @@ def button_pressed():
 def turn_on_light():
   print("light would be turned on")
 
-while True:
-  print("distance: "+str(get_distance()))
-  print("lighting OK?: "+str(lighting_ok()))
-  print("button pressed?: "+str(button_pressed()))
-  print("color read: "+str(button_pressed()))
-  if (button_pressed()):
-    if (distance_ok()):
-      if (not lighting_ok()):
-        turn_on_light()
-      input_color_val = input_color() ; #replace with sensor value
-      read_text(color_name(input_color_val));
-    else:
-      send_distance_error()
+def main_loop():
+  while True:
+    print("distance: "+str(get_distance()))
+    print("lighting OK?: "+str(lighting_ok()))
+    print("button pressed?: "+str(button_pressed()))
+    print("color read: "+str(button_pressed()))
+    if (button_pressed()):
+      if (distance_ok()):
+        if (not lighting_ok()):
+          turn_on_light()
+        input_color_val = input_color() ; #replace with sensor value
+        read_text(color_name(input_color_val));
+      else:
+        send_distance_error()
 
+def destroy():
+    GPIO.output(Gpin, GPIO.HIGH)       # Green led off
+    GPIO.output(Rpin, GPIO.HIGH)       # Red led off
+    GPIO.cleanup() 
 
+if __name__ == '__main__':     # Program start from here
+    setup()
+    try:
+        main_loop()
+    except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
+        destroy()
 
 
 #colorTest = input_color();
