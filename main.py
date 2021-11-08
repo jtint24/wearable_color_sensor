@@ -86,11 +86,11 @@ def read_text(str):
   subprocess.run(("espeak \""+str+"\" 2>/dev/null").split(" "));
 
 def lighting_ok():
-    lighting_value = ADC.read(0); #change this to sensor value
+    lighting_value = ADC.read(0); 
     return (lighting_value >= 254);
     
 def distance_ok():
-    distance = get_distance(); #change this to sensor value
+    distance = get_distance(); 
     threshhold = 2;
     return distance<threshhold;
 
@@ -115,21 +115,21 @@ def turn_on_light():
 def main_loop():
   while True:
     print("distance: "+str(get_distance()))
-    print("lighting OK?: "+str(lighting_ok()))
+    #print("lighting OK?: "+str(lighting_ok()))
     print("button pressed?: "+str(button_pressed()))
     print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
     if (button_pressed()):
       if (distance_ok()):
-        if (not lighting_ok()):
-          turn_on_light()
-        input_color_val = input_color() ; #replace with sensor value
+        #if (not lighting_ok()):
+        #  turn_on_light()
+        input_color_val = input_color() ; 
         read_text(color_name(input_color_val));
       else:
         send_distance_error()
 
 def destroy():
-    GPIO.output(Gpin, GPIO.HIGH)       # Green led off
-    GPIO.output(Rpin, GPIO.HIGH)       # Red led off
+    #GPIO.output(Gpin, GPIO.HIGH)       # Green led off
+    #GPIO.output(Rpin, GPIO.HIGH)  
     GPIO.cleanup() 
 
 if __name__ == '__main__':     # Program start from here
