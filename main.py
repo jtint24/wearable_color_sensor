@@ -24,7 +24,7 @@ ECHO = 12;
 BtnPin = 11;
 Gpin   = 12;
 Rpin   = 13;
-button_pressed_var = false;
+button_pressed_var = False;
 
 def setup(): 
     GPIO.setmode(GPIO.BOARD);
@@ -35,10 +35,11 @@ def setup():
     GPIO.setup(TRIG, GPIO.OUT);
     GPIO.setup(ECHO, GPIO.IN);
     ADC.setup(0x48)
-    GPIO.setup(DO, GPIO.IN)
+    #GPIO.setup(DO, GPIO.IN)
 
 def detect(chn):
     button_pressed_var = GPIO.input(BtnPin)
+    return
 
 def get_distance():
     GPIO.output(TRIG, 0)
@@ -102,7 +103,7 @@ def input_color():
   greenIn = int((data[1] * 256 + data[0])/256);
   redIn = int((data[3] * 256 + data[2])/256);
   blueIn = int((data[5] * 256 + data[4])/256);
-  print(str(redIn)+","+str(greenIn)+","+str(blueIn));
+  #print(str(redIn)+","+str(greenIn)+","+str(blueIn));
   return Color(redIn, greenIn, blueIn);
 
 def button_pressed():
@@ -116,7 +117,7 @@ def main_loop():
     print("distance: "+str(get_distance()))
     print("lighting OK?: "+str(lighting_ok()))
     print("button pressed?: "+str(button_pressed()))
-    print("color read: "+str(button_pressed()))
+    print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
     if (button_pressed()):
       if (distance_ok()):
         if (not lighting_ok()):
