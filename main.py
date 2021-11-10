@@ -38,8 +38,13 @@ def setup():
     #GPIO.setup(DO, GPIO.IN)
 
 def detect(chn):
-    button_pressed_var = GPIO.input(BtnPin)
+    buttonInputManage(GPIO.input(BtnPin))
     return
+
+def buttonInputManage(buttonIn):
+  global buttonPressed
+  buttonPressed = buttonIn
+  time.sleep(0.3)
 
 def get_distance():
     GPIO.output(TRIG, 0)
@@ -116,9 +121,9 @@ def main_loop():
   while True:
     print("distance: "+str(get_distance()))
     #print("lighting OK?: "+str(lighting_ok()))
-    print("button pressed?: "+str(button_pressed()))
+    print("button pressed?: "+str(buttonPressed))
     print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
-    if (button_pressed()):
+    if (buttonPressed==1):
       if (distance_ok()):
         #if (not lighting_ok()):
         #  turn_on_light()
@@ -128,7 +133,7 @@ def main_loop():
         send_distance_error()
 
 def destroy():
-    #GPIO.output(Gpin, GPIO.HIGH)       # Green led off
+    #GPIO.output(Gpin, GPIO.HIGH)
     #GPIO.output(Rpin, GPIO.HIGH)  
     GPIO.cleanup() 
 
