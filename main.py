@@ -21,7 +21,7 @@ color_list = [Color(172,194,217),Color(86,174,87),Color(178,153,110),Color(168,2
 DO = 17;
 TRIG = 11;
 ECHO = 12;
-BtnPin = 11;
+BtnPin = 33;
 Gpin   = 12;
 Rpin   = 13;
 button_pressed_var = False;
@@ -45,15 +45,7 @@ def detect(chn):
 def buttonInputManage(buttonIn):
   global buttonPressed
   buttonPressed = buttonIn
-
-  if (buttonIn==1):
-      if (distance_ok()):
-        #if (not lighting_ok()):
-        #  turn_on_light()
-        input_color_val = input_color() ; 
-        read_text(color_name(input_color_val));
-      else:
-        send_distance_error()
+  print("awefawef")
 
   time.sleep(0.3)
 
@@ -123,7 +115,7 @@ def input_color():
   return Color(redIn, greenIn, blueIn);
 
 def button_pressed():
-  return GPIO.input(BtnPin);
+  return GPIO.input(BtnPin)==0;
 
 def turn_on_light():
   print("light would be turned on")
@@ -131,8 +123,16 @@ def turn_on_light():
 def main_loop():
   while True:
     #print("lighting OK?: "+str(lighting_ok()))
-    print("button pressed?: "+str(buttonPressed))
-    print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
+    #print("button pressed?: "+GPIO.output(btnPin))
+    #print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
+    if (button_pressed()):
+      if (distance_ok()):
+        #if (not lighting_ok()):
+        #  turn_on_light()
+        input_color_val = input_color() ; 
+        read_text(color_name(input_color_val));
+      else:
+        send_distance_error()
     
 
 def destroy():
