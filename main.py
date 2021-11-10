@@ -130,7 +130,6 @@ def turn_on_light():
 
 def main_loop():
   while True:
-    print("distance: "+str(get_distance()))
     #print("lighting OK?: "+str(lighting_ok()))
     print("button pressed?: "+str(buttonPressed))
     print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
