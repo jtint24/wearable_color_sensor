@@ -22,7 +22,7 @@ DO = 17; #no valid board num.
 TRIG = 17; #Board: 11
 ECHO = 18; #Board: 12
 BtnPin = 13; #Board: 33
-Gpin   = 18; #Board: 12
+Gpin   = 23; #Board: 12
 Rpin   = 20; #Board: 13
 Bpin   = 27; #Board: 15
 button_pressed_var = False;
@@ -43,8 +43,6 @@ def setColor(col):   # For example : col = 0x112233
 
 def setup(): 
     GPIO.setmode(GPIO.BCM);
-    GPIO.setup(Gpin, GPIO.OUT);
-    GPIO.setup(Rpin, GPIO.OUT);
     GPIO.setup(BtnPin, GPIO.IN, pull_up_down=GPIO.PUD_UP);
     GPIO.add_event_detect(BtnPin, GPIO.BOTH, callback=detect, bouncetime=200);
     GPIO.setup(TRIG, GPIO.OUT);
