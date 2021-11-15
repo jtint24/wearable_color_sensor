@@ -48,7 +48,8 @@ def buttonInputManage(buttonIn):
   print("awefawef")
   if (button_pressed()):
       if (distance_ok()):
-        #if (not lighting_ok()):
+        if (not lighting_ok()):
+          print("the light needs to be on");
         #  turn_on_light()
         input_color_val = input_color() ; 
         read_text(color_name(input_color_val));
@@ -106,7 +107,7 @@ def lighting_ok():
     
 def distance_ok():
     distance = get_distance(); 
-    threshhold = 2;
+    threshhold = 10;
     return distance<threshhold;
 
 def send_distance_error():
@@ -131,7 +132,8 @@ def main_loop():
   while True:
     #print("lighting OK?: "+str(lighting_ok()))
     #print("button pressed?: "+GPIO.output(btnPin))
-    #print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
+    print("lighting value: "+str(ADC.read(0)));
+    print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
     
 
 def destroy():
