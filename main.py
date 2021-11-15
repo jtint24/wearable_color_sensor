@@ -49,7 +49,7 @@ def buttonInputManage(buttonIn):
   if (button_pressed()):
       if (distance_ok()):
         if (not lighting_ok()):
-          print("the light needs to be on");
+          read_text("lighting is too low");
         #  turn_on_light()
         input_color_val = input_color() ; 
         read_text(color_name(input_color_val));
@@ -103,7 +103,7 @@ def read_text(str):
 
 def lighting_ok():
     lighting_value = ADC.read(0); 
-    return (lighting_value >= 254);
+    return (lighting_value < 254);
     
 def distance_ok():
     distance = get_distance(); 
@@ -134,6 +134,7 @@ def main_loop():
     #print("button pressed?: "+GPIO.output(btnPin))
     print("lighting value: "+str(ADC.read(0)));
     print("color read: "+str(input_color().red)+","+str(input_color().green)+","+str(input_color().blue))
+    time.sleep(.3);
     
 
 def destroy():
