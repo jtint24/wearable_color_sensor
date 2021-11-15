@@ -153,6 +153,10 @@ def button_pressed():
 def turn_on_light():
   setColor(0xffffff);
 
+def map(x, in_min, in_max, out_min, out_max):
+   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
 def main_loop():
   while True:
     #print("lighting OK?: "+str(lighting_ok()))
