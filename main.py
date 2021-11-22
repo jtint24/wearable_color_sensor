@@ -1,18 +1,21 @@
 #!/usr/bin/python
-import subprocess
-import smbus
-import time
-from tkinter import *
-import RPi.GPIO as GPIO
-import PCF8591 as ADC
+import subprocess #lets us run UNIX commands
+import smbus #Lets us use busreads for rgb
+import time #lets us use wait
+from tkinter import * #lets us use kinter
+import RPi.GPIO as GPIO #Lets us interface with GPIO
+import PCF8591 as ADC #Lets us use ADC funcitonality for photoresistor
 
-print("Program loaded.");
+print("Program loaded."); #lets us know that program is loaded
 
-class Color:
+class Color: #class to define "colors" as objects with r, g, and b values
   def __init__(self, r, g, b):
     self.red = r
     self.blue = b
     self.green = g
+
+
+#DEFINES PAIRED LIST OF COLORS NAMES/LITERALS:
 
 color_names = ["cloudy blue","dark pastel green","dust","electric lime","fresh green","light eggplant","nasty green","really light blue","tea","warm purple","yellowish tan","cement","dark grass green","dusty teal","grey teal","macaroni and cheese","pinkish tan","spruce","strong blue","toxic green","windows blue","blue blue","blue with a hint of purple","booger","bright sea green","dark green blue","deep turquoise","green teal","strong pink","bland","deep aqua","lavender pink","light moss green","light seafoam green","olive yellow","pig pink","deep lilac","desert","dusty lavender","purpley grey","purply","candy pink","light pastel green","boring green","kiwi green","light grey green","orange pink","tea green","very light brown","egg shell","eggplant purple","powder pink","reddish grey","baby shit brown","liliac","stormy blue","ugly brown","custard","darkish pink","deep brown","greenish beige","manilla","off blue","battleship grey","browny green","bruise","kelley green","sickly yellow","sunny yellow","azul","darkgreen","green/yellow","lichen","light light green","pale gold","sun yellow","tan green","burple","butterscotch","toupe","dark cream","indian red","light lavendar","poison green","baby puke green","bright yellow green","charcoal grey","squash","cinnamon","light pea green","radioactive green","raw sienna","baby purple","cocoa","light royal blue","orangeish","rust brown","sand brown","swamp","tealish green","burnt siena","camo","dusk blue","fern","old rose","pale light green","peachy pink","rosy pink","light bluish green","light bright green","light neon green","light seafoam","tiffany blue","washed out green","browny orange","nice blue","sapphire","greyish teal","orangey yellow","parchment","straw","very dark brown","terracota","ugly blue","clear blue","creme","foam green","grey/green","light gold","seafoam blue","topaz","violet pink","wintergreen","yellow tan","dark fuchsia","indigo blue","light yellowish green","pale magenta","rich purple","sunflower yellow","green/blue","leather","racing green","vivid purple","dark royal blue","hazel","muted pink","booger green","canary","cool grey","dark taupe","darkish purple","true green","coral pink","dark sage","dark slate blue","flat blue","mushroom","rich blue","dirty purple","greenblue","icky green","light khaki","warm blue","dark hot pink","deep sea blue","carmine","dark yellow green","pale peach","plum purple","golden rod","neon red","old pink","very pale blue","blood orange","grapefruit","sand yellow","clay brown","dark blue grey","flat green","light green blue","warm pink","dodger blue","gross green","ice","metallic blue","pale salmon","sap green","algae","bluey grey","greeny grey","highlighter green","light light blue","light mint","raw umber","vivid blue","deep lavender","dull teal","light greenish blue","mud green","pinky","red wine","shit green","tan brown","darkblue","rosa","lipstick","pale mauve","claret","dandelion","orangered","poop green","ruby","dark","greenish turquoise","pastel red","piss yellow","bright cyan","dark coral","algae green","darkish red","reddy brown","blush pink","camouflage green","lawn green","putty","vibrant blue","dark sand","purple/blue","saffron","twilight","warm brown","bluegrey","bubble gum pink","duck egg blue","greenish cyan","petrol","royal","butter","dusty orange","off yellow","pale olive green","orangish","leaf","light blue grey","dried blood","lightish purple","rusty red","lavender blue","light grass green","light mint green","sunflower","velvet","brick orange","lightish red","pure blue","twilight blue","violet red","yellowy brown","carnation","muddy yellow","dark seafoam green","deep rose","dusty red","grey/blue","lemon lime","purple/pink","brown yellow","purple brown","wisteria","banana yellow","lipstick red","water blue","brown grey","vibrant purple","baby green","barf green","eggshell blue","sandy yellow","cool green","pale","blue/grey","hot magenta","greyblue","purpley","baby shit green","brownish pink","dark aquamarine","diarrhea","light mustard","pale sky blue","turtle green","bright olive","dark grey blue","greeny brown","lemon green","light periwinkle","seaweed green","sunshine yellow","ugly purple","medium pink","puke brown","very light pink","viridian","bile","faded yellow","very pale green","vibrant green","bright lime","spearmint","light aquamarine","light sage","yellowgreen","baby poo","dark seafoam","deep teal","heather","rust orange","dirty blue","fern green","bright lilac","weird green","peacock blue","avocado green","faded orange","grape purple","hot green","lime yellow","mango","shamrock","bubblegum","purplish brown","vomit yellow","pale cyan","key lime","tomato red","lightgreen","merlot","night blue","purpleish pink","apple","baby poop green","green apple","heliotrope","yellow/green","almost black","cool blue","leafy green","mustard brown","dusk","dull brown","frog green","vivid green","bright light green","fluro green","kiwi","seaweed","navy green","ultramarine blue","iris","pastel orange","yellowish orange","perrywinkle","tealish","dark plum","pear","pinkish orange","midnight purple","light urple","dark mint","greenish tan","light burgundy","turquoise blue","ugly pink","sandy","electric pink","muted purple","mid green","greyish","neon yellow","banana","carnation pink","tomato","sea","muddy brown","turquoise green","buff","fawn","muted blue","pale rose","dark mint green","amethyst","blue/green","chestnut","sick green","pea","rusty orange","stone","rose red","pale aqua","deep orange","earth","mossy green","grassy green","pale lime green","light grey blue","pale grey","asparagus","blueberry","purple red","pale lime","greenish teal","caramel","deep magenta","light peach","milk chocolate","ocher","off green","purply pink","lightblue","dusky blue","golden","light beige","butter yellow","dusky purple","french blue","ugly yellow","greeny yellow","orangish red","shamrock green","orangish brown","tree green","deep violet","gunmetal","blue/purple","cherry","sandy brown","warm grey","dark indigo","midnight","bluey green","grey pink","soft purple","blood","brown red","medium grey","berry","poo","purpley pink","light salmon","snot","easter purple","light yellow green","dark navy blue","drab","light rose","rouge","purplish red","slime green","baby poop","irish green","pink/purple","dark navy","greeny blue","light plum","pinkish grey","dirty orange","rust red","pale lilac","orangey red","primary blue","kermit green","brownish purple","murky green","wheat","very dark purple","bottle green","watermelon","deep sky blue","fire engine red","yellow ochre","pumpkin orange","pale olive","light lilac","lightish green","carolina blue","mulberry","shocking pink","auburn","bright lime green","celadon","pinkish brown","poo brown","bright sky blue","celery","dirt brown","strawberry","dark lime","copper","medium brown","muted green","robin's egg","bright aqua","bright lavender","ivory","very light purple","light navy","pink red","olive brown","poop brown","mustard green","ocean green","very dark blue","dusty green","light navy blue","minty green","adobe","barney","jade green","bright light blue","light lime","dark khaki","orange yellow","ocre","maize","faded pink","british racing green","sandstone","mud brown","light sea green","robin egg blue","aqua marine","dark sea green","soft pink","orangey brown","cherry red","burnt yellow","brownish grey","camel","purplish grey","marine","greyish pink","pale turquoise","pastel yellow","bluey purple","canary yellow","faded red","sepia","coffee","bright magenta","mocha","ecru","purpleish","cranberry","darkish green","brown orange","dusky rose","melon","sickly green","silver","purply blue","purpleish blue","hospital green","shit brown","mid blue","amber","easter green","soft blue","cerulean blue","golden brown","bright turquoise","red pink","red purple","greyish brown","vermillion","russet","steel grey","lighter purple","bright violet","prussian blue","slate green","dirty pink","dark blue green","pine","yellowy green","dark gold","bluish","darkish blue","dull red","pinky red","bronze","pale teal","military green","barbie pink","bubblegum pink","pea soup green","dark mustard","shit","medium purple","very dark green","dirt","dusky pink","red violet","lemon yellow","pistachio","dull yellow","dark lime green","denim blue","teal blue","lightish blue","purpley blue","light indigo","swamp green","brown green","dark maroon","hot purple","dark forest green","faded blue","drab green","light lime green","snot green","yellowish","light blue green","bordeaux","light mauve","ocean","marigold","muddy green","dull orange","steel","electric purple","fluorescent green","yellowish brown","blush","soft green","bright orange","lemon","purple grey","acid green","pale lavender","violet blue","light forest green","burnt red","khaki green","cerise","faded purple","apricot","dark olive green","grey brown","green grey","true blue","pale violet","periwinkle blue","light sky blue","blurple","green brown","bluegreen","bright teal","brownish yellow","pea soup","forest","barney purple","ultramarine","purplish","puke yellow","bluish grey","dark periwinkle","dark lilac","reddish","light maroon","dusty purple","terra cotta","avocado","marine blue","teal green","slate grey","lighter green","electric green","dusty blue","golden yellow","bright yellow","light lavender","umber","poop","dark peach","jungle green","eggshell","denim","yellow brown","dull purple","chocolate brown","wine red","neon blue","dirty green","light tan","ice blue","cadet blue","dark mauve","very light blue","grey purple","pastel pink","very light green","dark sky blue","evergreen","dull pink","aubergine","mahogany","reddish orange","deep green","vomit green","purple pink","dusty pink","faded green","camo green","pinky purple","pink purple","brownish red","dark rose","mud","brownish","emerald green","pale brown","dull blue","burnt umber","medium green","clay","light aqua","light olive green","brownish orange","dark aqua","purplish pink","dark salmon","greenish grey","jade","ugly green","dark beige","emerald","pale red","light magenta","sky","light cyan","yellow orange","reddish purple","reddish pink","orchid","dirty yellow","orange red","deep red","orange brown","cobalt blue","neon pink","rose pink","greyish purple","raspberry","aqua green","salmon pink","tangerine","brownish green","red brown","greenish brown","pumpkin","pine green","charcoal","baby pink","cornflower","blue violet","chocolate","greyish green","scarlet","green yellow","dark olive","sienna","pastel purple","terracotta","aqua blue","sage green","blood red","deep pink","grass","moss","pastel blue","bluish green","green blue","dark tan","greenish blue","pale orange","vomit","forrest green","dark lavender","dark violet","purple blue","dark cyan","olive drab","pinkish","cobalt","neon purple","light turquoise","apple green","dull green","wine","powder blue","off white","electric blue","dark turquoise","blue purple","azure","bright red","pinkish red","cornflower blue","light olive","grape","greyish blue","purplish blue","yellowish green","greenish yellow","medium blue","dusty rose","light violet","midnight blue","bluish purple","red orange","dark magenta","greenish","ocean blue","coral","cream","reddish brown","burnt sienna","brick","sage","grey green","white","robin's egg blue","moss green","steel blue","eggplant","light yellow","leaf green","light grey","puke","pinkish purple","sea blue","pale purple","slate blue","blue grey","hunter green","fuchsia","crimson","pale yellow","ochre","mustard yellow","light red","cerulean","pale pink","deep blue","rust","light teal","slate","goldenrod","dark yellow","dark grey","army green","grey blue","seafoam","puce","spring green","dark orange","sand","pastel green","mint","light orange","bright pink","chartreuse","deep purple","dark brown","taupe","pea green","puke green","kelly green","seafoam green","blue green","khaki","burgundy","dark teal","brick red","royal purple","plum","mint green","gold","baby blue","yellow green","bright purple","dark red","pale blue","grass green","navy","aquamarine","burnt orange","neon green","bright blue","rose","light pink","mustard","indigo","lime","sea green","periwinkle","dark pink","olive green","peach","pale green","light brown","hot pink","black","lilac","navy blue","royal blue","beige","salmon","olive","maroon","bright green","dark purple","mauve","forest green","aqua","cyan","tan","dark blue","lavender","turquoise","dark green","violet","light purple","lime green","grey","sky blue","yellow","magenta","light green","orange","teal","light blue","red","brown","pink","blue","green","purple"]
 
@@ -28,7 +31,7 @@ Bpin   = 27; #Board: 15
 button_pressed_var = False;
 buttonPressed = 0
 
-def setColor(col):   # For example : col = 0x112233
+def setColor(col):   #sets the color of the light with a hex
    R_val = (col & 0xff0000) >> 16
    G_val = (col & 0x00ff00) >> 8
    B_val = (col & 0x0000ff) >> 0
@@ -41,10 +44,10 @@ def setColor(col):   # For example : col = 0x112233
    p_G.ChangeDutyCycle(100-G_val)
    p_B.ChangeDutyCycle(100-B_val)
 
-def setup(): 
-    GPIO.setmode(GPIO.BCM);
+def setup(): #Sets up all values
+    GPIO.setmode(GPIO.BCM); #use BCM Mode
     GPIO.setup(BtnPin, GPIO.IN, pull_up_down=GPIO.PUD_UP);
-    GPIO.add_event_detect(BtnPin, GPIO.BOTH, callback=detect, bouncetime=200);
+    GPIO.add_event_detect(BtnPin, GPIO.BOTH, callback=detect, bouncetime=200); #sets up detect function as button press function
     GPIO.setup(TRIG, GPIO.OUT);
     GPIO.setup(ECHO, GPIO.IN);
     ADC.setup(0x48)
@@ -63,28 +66,28 @@ def setup():
     p_G.start(100)
     p_B.start(100)
 
-def detect(chn):
+def detect(chn): #Detects button pressed
     buttonInputManage(GPIO.input(BtnPin))
     return
 
-def buttonInputManage(buttonIn):
+def buttonInputManage(buttonIn): #MAIN FUNCTIONALITY HERE
   global buttonPressed
   buttonPressed = buttonIn
-  print("awefawef")
+  print("awefawef") #just a flag to ensure button is working
   if (button_pressed()):
       if (distance_ok()):
         if (not lighting_ok()):
           read_text("light activated");
-          turn_on_light()
+          turn_on_light(); 
         else:
-          setColor(0x000000);
-        input_color_val = input_color() ; 
+          setColor(0x000000); #turns light off
+        input_color_val = input_color() ; #gets the value of the color sensor
         read_text(color_name(input_color_val));
       else:
-        send_distance_error()
+        send_distance_error(); #if distance is too high, say "move closer"
   time.sleep(0.3)
 
-def get_distance():
+def get_distance(): #uses time recorded between bounces to estimate distance
     GPIO.output(TRIG, 0)
     time.sleep(0.000002)
 
@@ -100,7 +103,7 @@ def get_distance():
     time2 = time.time()
 
     during = time2 - time1
-    return during * 340 / 2 * 100
+    return during * 340 / 2 * 100 
 
 
 def color_distance(c1, c2):
@@ -128,19 +131,19 @@ def read_text(str):
   str = str.replace(' ','_');
   subprocess.run(("espeak \""+str+"\" 2>/dev/null").split(" "));
 
-def lighting_ok():
+def lighting_ok(): #checks if the lighting val is in a resonable range
     lighting_value = ADC.read(0); 
     return (lighting_value < 254);
     
-def distance_ok():
+def distance_ok(): #checks if the distance is under a threshhold
     distance = get_distance(); 
     threshhold = 10;
     return distance<threshhold;
 
-def send_distance_error():
+def send_distance_error(): #says "move closer"
     read_text("move closer");
 
-def input_color():
+def input_color(): #gets the imput color
   bus = smbus.SMBus(1)
   data = bus.read_i2c_block_data(0x44, 0x09, 6);
   greenIn = int((data[1] * 256 + data[0])/256);
@@ -149,7 +152,7 @@ def input_color():
   #print(str(redIn)+","+str(greenIn)+","+str(blueIn));
   return Color(redIn, greenIn, blueIn);
 
-def button_pressed():
+def button_pressed(): 
   return GPIO.input(BtnPin)==0;
 
 def turn_on_light():
@@ -168,7 +171,7 @@ def main_loop():
     time.sleep(.3);
     
 
-def destroy():
+def destroy(): #ends processes
     #GPIO.output(Gpin, GPIO.HIGH)
     #GPIO.output(Rpin, GPIO.HIGH)  
     p_R.stop()
